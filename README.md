@@ -14,3 +14,7 @@ See:
 * [Original Article] (http://www.atariarchives.org/bcc1/showpage.php?page=247)
 * [Wikipedia] (http://en.wikipedia.org/wiki/Hunt_the_Wumpus)
 * [BSD wump man page] (http://web.archive.org/web/20090214233010/http://linux.die.net/man/6/wump)
+
+## Support
+
+For support requests, logging found issues, etc., please use the projects [Issue Tracking] (https://github.com/ptdecker/wumpus-proc/issues) system.
