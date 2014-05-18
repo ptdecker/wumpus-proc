@@ -11,7 +11,7 @@
  * syntax.  This is a purely procedural implementation not leveraging
  * any object-oriented design principles or language feature.  It
  * is designed to run from the console just as the original would
- * have worked.  As such, it is a good illustration of Java syntax
+ * have worked.  As such, it is an illustration of Java syntax
  * but not a particularly good example of a modern object-oriented
  * approach to the problem.  My intent is to simply resurrect the
  * original spirit, then build from that while developing my Java
@@ -23,10 +23,23 @@
  * 
  **/
 
+/**
+ * To complie:
+ *    - from ./
+ *    - "javac -cp . -d ./classes/ ./src/org/ptodd/wumpus/*.java"
+ *    - assuming source files in ./src/org/ptodd/wumpus
+ *    - no third-party jars
+ * To execute:
+ *	  - from ./
+ *    - "java -cp ./classes org/ptodd/wumpus/Wumpus"
+ **/
+
+package org.ptodd.wumpus;
+
 import java.util.*;
 import java.io.*;
 
-public class WumpusI {
+public class Wumpus {
 	
 	// Standard in, out, and error streams
 	
@@ -113,32 +126,32 @@ public class WumpusI {
 	int   status;
 	
 	/**
-	 * WumpusI Constructor
+	 * Wumpus Constructor
 	 * 
 	 * Offers instructions, sets up the game, then enters a play loop
 	 * until the player decides enough is enough providing the chance
 	 * to play the same configuration over again.
 	 */
 		
-	private WumpusI() {
+	private Wumpus() {
 		
 		out.println("Java Wumpus\n");
 		
-		if (singleUpperCaseCharPrompt("Instructions (Y-N)?")=='Y') {			
+		if (singleUpperCaseCharPrompt("Instructions (Y-N)?") == 'Y') {			
 			instructions();
 		} // if instructions
 		
 		setup();
 		
 		do {			
-			out.println("\nHunt the Wumpus");			
-			playGame();	
-			finalStatus();						
+			out.println("\nHunt the Wumpus");
+			playGame();
+			finalStatus();
 		} while (playAgain());
 		
 		out.println("\nThank you for playing 'Hunt the Wumpus'!");
 
-	} // constructor WumpusI
+	} // constructor Wumpus
 
 	/**
 	 * Game event loop
@@ -155,8 +168,10 @@ public class WumpusI {
 		do {	
 			look();
 			status = takeAction();
-			if (status==CONTINUE) status = checkHazards(status);
-		} while (status==CONTINUE);
+			if (status == CONTINUE) {
+				status = checkHazards(status);
+			}
+		} while (status == CONTINUE);
 
 	} // method playGame
 
@@ -170,17 +185,17 @@ public class WumpusI {
 	private void finalStatus() {
 
 		switch (status) {
-		case WUMPUS_DEAD:
-			out.println("\nHee Hee Hee - The Wumpus'll getcha next time!!");
-			break;
-		case HUNTER_DEAD:
-			out.println("\nHa Ha Ha - You Lose!");
-			break;
-		case QUIT:
-			out.println("\nYou give up and are magically returned to safety in shame!");
-			break;
-		default:
-			err.println("Something bad happend!");
+			case WUMPUS_DEAD:
+				out.println("\nHee Hee Hee - The Wumpus'll getcha next time!!");
+				break;
+			case HUNTER_DEAD:
+				out.println("\nHa Ha Ha - You Lose!");
+				break;
+			case QUIT:
+				out.println("\nYou give up and are magically returned to safety in shame!");
+				break;
+			default:
+				err.println("Something bad happend!");
 		} // switch game state
 
 	} // method finalStatus
@@ -225,15 +240,15 @@ public class WumpusI {
 	private int takeAction() {
 	
 		switch (getAction()) {
-		case ACTION_MOVE:
-			return move();
-		case ACTION_SHOOT:
-			return shoot();
-		case ACTION_QUIT:
-			return QUIT;
-		default:
-			err.println("Invalid action identifier returned from 'getAction' method");
-			return QUIT;
+			case ACTION_MOVE:
+				return move();
+			case ACTION_SHOOT:
+				return shoot();
+			case ACTION_QUIT:
+				return QUIT;
+			default:
+				err.println("Invalid action identifier returned from 'getAction' method");
+				return QUIT;
 		} // switch action identifier
 
 	} // method takeAction
@@ -255,7 +270,9 @@ public class WumpusI {
 		
 		do {
 			out.printf("%s ", msg);
-			while (!in.hasNextLine());
+			while (!in.hasNextLine()) {
+				// intentionally empty loop body to loop if we get a blank line
+			};
 			response = in.nextLine().toUpperCase();
 		} while (response.isEmpty());
 		
@@ -269,7 +286,7 @@ public class WumpusI {
 	 * Set up the game by placing the game objects into the cave system
 	 * assuring that each cave room contains, at most, one object. 
 	 * 
-	 * The algorithm used to assure no two objects are placed into the
+	 * This naive algorithm used to assure no two objects are placed into the
 	 * same room is to loop through each of the game objects and, for 
 	 * each one, pick a random room in which to place the object.  Before
 	 * the objects location is recorded, we loop back down through all the
@@ -283,10 +300,10 @@ public class WumpusI {
 	
 	private void setup() {
 		Random generator = new Random();		
-		for (int j=0; j<NUM_OF_OBJECTS; j++) {
-			int loc = generator.nextInt(MAX_ROOMS);     // random location
-			for (int k=(j-1); k>=0; k--) {              // check prior locations to assure no duplicates
-				if (locationOf[k]==loc) {               // found a duplicate, so try another location
+		for (int j = 0; j < NUM_OF_OBJECTS; j++) {
+			int loc = generator.nextInt(MAX_ROOMS);     // pick a random location
+			for (int k = (j - 1); k >= 0; k--) {        // check prior locations to assure no duplicates
+				if (locationOf[k] == loc) {             // found a duplicate, so try another location
 					loc = generator.nextInt(MAX_ROOMS); // pick a new random location
 					k = j;                              // k will be reduced by one in the for loop
 				} // if location match
@@ -320,10 +337,16 @@ public class WumpusI {
 	private void lookTunnels() {
 		out.printf("\nYou are in room %d.\n", locationOf[HUNTER]+1);
 		out.print("Tunnels lead to");
-		for (int j=0; j<MAX_PATHS; j++) {
-			if (j==0) out.print(" ");
-			if ((0<j)&&j<(MAX_PATHS-1)) out.print(", ");
-			if (j==(MAX_PATHS-1)) out.print(", and ");
+		for (int j = 0; j < MAX_PATHS; j++) {
+			if (j == 0) {
+				out.print(" ");
+			}
+			if ((0 < j) && j < (MAX_PATHS - 1)) {
+				out.print(", ");
+			}
+			if (j == (MAX_PATHS - 1)) {
+				out.print(", and ");
+			}
 			out.print(cave[locationOf[HUNTER]][j]+1);
 		} // for j
 		out.println(".");
@@ -338,9 +361,9 @@ public class WumpusI {
 	 */
 	
 	private void senseHazards() {
-		for (int j=1; j<NUM_OF_OBJECTS; j++) {
-			for (int k=0; k<MAX_PATHS; k++) {
-				if (cave[locationOf[HUNTER]][k]==locationOf[j]) {
+		for (int j = 1; j < NUM_OF_OBJECTS; j++) {
+			for (int k = 0; k < MAX_PATHS; k++) {
+				if (cave[locationOf[HUNTER]][k] == locationOf[j]) {
 					switch (j) {
 					case WUMPUS:
 						out.println("You smell a Wumpus!");
@@ -369,9 +392,9 @@ public class WumpusI {
 	 */
 
 	private void quiverStatus() {
-		if (arrows==0) {
+		if (arrows == 0) {
 			out.println("You have no more arrows!");
-		} else if (arrows==1) {
+		} else if (arrows == 1) {
 			out.println("You only have one more arrow!");
 		} else {
 			out.printf("You have %d arrows.\n", arrows);
@@ -389,12 +412,12 @@ public class WumpusI {
 	private int getAction() {
 		do {
 			switch (singleUpperCaseCharPrompt("\nShoot, move, or quit (S,M,Q)?")) {
-			case 'S':
-				return ACTION_SHOOT;
-			case 'M':
-				return ACTION_MOVE;
-			case 'Q':
-				return ACTION_QUIT;
+				case 'S':
+					return ACTION_SHOOT;
+				case 'M':
+					return ACTION_MOVE;
+				case 'Q':
+					return ACTION_QUIT;
 			} // switch action identifier
 		} while (true);
 	} // method getAction
@@ -435,8 +458,8 @@ public class WumpusI {
 	 */
 	
 	private boolean isConnected(int from, int to) {
-		for (int j=0; j < MAX_PATHS; j++) {
-			if (cave[from][j]==to) {
+		for (int j = 0; j < MAX_PATHS; j++) {
+			if (cave[from][j] == to) {
 				return true;
 			} // if connected
 		} // for j
@@ -459,12 +482,12 @@ public class WumpusI {
 	 */
 	
 	private int shoot() {
-		if (arrows>0) {
+		if (arrows > 0) {
 			arrows--;
 			ArrayList<Integer> arrowPath = new ArrayList<Integer>();
 			getPath(arrowPath, getRange());
 			int status = trackArrow(arrowPath);
-			if (status==CONTINUE) {
+			if (status == CONTINUE) {
 				return wumpusAwaken();
 			} else {
 				return status;
@@ -534,9 +557,9 @@ public class WumpusI {
 			
 			// get a room number on the flight path
 
-			out.printf("Room %d ? ", j+1);
+			out.printf("Room %d ? ", j + 1);
 			try {
-				nextRoom = Integer.parseInt(in.nextLine())-1;
+				nextRoom = Integer.parseInt(in.nextLine()) - 1;
 			} catch (NumberFormatException e) {
 				out.println("Please enter a number!");
 				j--;
@@ -549,7 +572,7 @@ public class WumpusI {
 				out.println("You cannot try to commit suicide!");
 				j--;
 				continue;
-			} else if ((arrowPath.size() > 1) && (arrowPath.get(arrowPath.size()-2) == nextRoom)) {
+			} else if ((arrowPath.size() > 1) && (arrowPath.get(arrowPath.size() - 2) == nextRoom)) {
 				out.println("Your arrows are not that crooked!");
 				j--;
 				continue;
@@ -561,7 +584,6 @@ public class WumpusI {
 		
 	} // method getPath
 
-	
 	/**
 	 * Track the flight of the arrow
 	 * 
@@ -607,13 +629,13 @@ public class WumpusI {
 	
 	private int guidedArrowFlightIntoRoom(int priorRoom, int currentRoom, int nextRoom, ArrayList<Integer> arrowPath) {
 		if (isConnected(currentRoom, nextRoom)) {
-			if (locationOf[HUNTER]==nextRoom) {
+			if (locationOf[HUNTER] == nextRoom) {
 				out.println("\nOh, no! You were hit by your own arrow!");
 				return HUNTER_DEAD;
-			} else if (locationOf[WUMPUS]==nextRoom) {
+			} else if (locationOf[WUMPUS] == nextRoom) {
 				out.println("\nWhap! Your arrow hit a wumpus!");
 				return WUMPUS_DEAD;
-			} else if (arrowPath.size()==0) {
+			} else if (arrowPath.size() == 0) {
 				out.println("\nYou missed!");
 				return CONTINUE;
 			} else {
@@ -651,17 +673,17 @@ public class WumpusI {
 		int nextRoom;
 		do {
 			nextRoom = cave[currentRoom][generator.nextInt(MAX_PATHS)];
-		} while (nextRoom==priorRoom);
+		} while (nextRoom == priorRoom);
 		
 		// check conditions, recursively continue flight if appropriate
 		
-		if (locationOf[HUNTER]==nextRoom) {
+		if (locationOf[HUNTER] == nextRoom) {
 			out.println("\nOh, no! You were hit by your own arrow!");
 			return HUNTER_DEAD;
-		} else if (locationOf[WUMPUS]==nextRoom) {
+		} else if (locationOf[WUMPUS] == nextRoom) {
 			out.println("\nWhap! Your arrow hit a wumpus!");
 			return WUMPUS_DEAD;
-		} else if (remainingRange==0) {
+		} else if (remainingRange == 0) {
 			out.println("\nYou missed!");
 			return CONTINUE;
 		} else {
@@ -682,11 +704,11 @@ public class WumpusI {
 	 */
 	
 	private int checkHazards(int status) {
-		if (locationOf[HUNTER]==locationOf[WUMPUS]) {
+		if (locationOf[HUNTER] == locationOf[WUMPUS]) {
 			return wumpusAction();
-		} else if ((locationOf[HUNTER]==locationOf[BATS1])||(locationOf[HUNTER]==locationOf[BATS2])) {
+		} else if ((locationOf[HUNTER] == locationOf[BATS1]) || (locationOf[HUNTER] == locationOf[BATS2])) {
 			return batAction();
-		} else if ((locationOf[HUNTER]==locationOf[PIT1])||(locationOf[HUNTER]==locationOf[PIT2])) {
+		} else if ((locationOf[HUNTER] == locationOf[PIT1]) || (locationOf[HUNTER] == locationOf[PIT2])) {
 			return pitAction();
 		} else {
 			return status;
@@ -792,14 +814,14 @@ public class WumpusI {
 		out.printf("Wumpus - The wumpus is not bothered by the hazards (he\n");
 		out.printf("has sucker feet and is too big for a bat to lift).\n");
 		out.printf("Usually he is asleep.  Two things that wake him up:\n");
-		out.printf("your entering his room, or your shooting an arrow.\n");
+		out.printf("entering his room, or shooting an arrow.\n");
 		out.printf("If the wumpus wakes, he moves (P=.75) one room or\n");
 		out.printf("stays still (P=.25). After that, if he is where you are\n");
 		out.printf("he eats you up (and you lose!)\n\n");
 		out.printf("You - Each turn you may move or shoot a crooked arrow.\n");
 		out.printf("Moving: You can go one room (thru one tunnel).\n");
-		out.printf("Arrows: You have 5 arrows.  You lose when you run out.\n");
-		out.printf("Each arrow can go from 1 to 5 rooms.  You aim by telling\n");
+		out.printf("Arrows: You have %d arrows.  You lose when you run out.\n", MAX_ARROWS);
+		out.printf("Each arrow can go from %d to %d rooms.  You aim by telling\n", MIN_ARROW_RANGE, MAX_ARROW_RANGE);
 		out.printf("the computer the rooms you want the arrow to go to.  If\n");
 		out.printf("the arrow can't go that way (i.e. no tunnel) it moves at\n");
 		out.printf("random to the next room. If the arrow hits the Wumpus,\n");
@@ -819,7 +841,7 @@ public class WumpusI {
 	 */
 	
 	public static void main(String[] args) {
-		new WumpusI();
+		new Wumpus();
 	} // static method main
 
-} // class WumpusI
+} // class Wumpus
