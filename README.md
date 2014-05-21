@@ -23,11 +23,13 @@ For now, to install and get it running you should be able to:
 
 1. Fork the respository
 1. Compile the source
-To complie:
+
 	$ javac -cp . -d ./classes/ ./src/org/ptodd/wumpus/*.java
+
  * This assumes the source file(s) are in ./src/org/ptodd/wumpus
  * No third-party jars are used at this time
 1. Execute
+
 	$ java -cp ./classes org/ptodd/wumpus/Wumpus
 
 ## Support
