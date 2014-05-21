@@ -15,6 +15,31 @@ See:
 * [Wikipedia] (http://en.wikipedia.org/wiki/Hunt_the_Wumpus)
 * [BSD wump man page] (http://web.archive.org/web/20090214233010/http://linux.die.net/man/6/wump)
 
+## Installing
+
+No build system (make, ant, maven, gradle, etc.) has been utilized yet. I am still working out the rust in my old skills and have not yet taken this on.
+
+For now, to install and get it running you should be able to:
+
+1. Fork the respository
+1. Compile the source
+To complie:
+	$ javac -cp . -d ./classes/ ./src/org/ptodd/wumpus/*.java
+ * This assumes the source file(s) are in ./src/org/ptodd/wumpus
+ * No third-party jars are used at this time
+1. Execute
+	$ java -cp ./classes org/ptodd/wumpus/Wumpus
+
 ## Support
 
 For support requests, logging found issues, etc., please use the projects [Issue Tracking] (https://github.com/ptdecker/wumpus-proc/issues) system.
+
+## [Contributing] (http://www.hanselman.com/blog/getinvolvedinopensourcetodayhowtocontributeapatchtoagithubhostedopensourceprojectlikecode52.aspx)
+
+At a minumum, please feel free to [create an issue or feature request](https://github.com/ptdecker/wumpus-proc/issues). If you would like to go further, then:
+
+1. Fork it
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Commit your changes (`git commit -am 'Add some feature'`)
+1. Push to the branch (`git push origin my-new-feature`)
+1. Create a new Pull Request

@@ -14,3 +14,5 @@
 hs_err_pid*
 ligo.sublime-project
 ligo.sublime-workspace
+src/org/ptodd/wumpus/wumpus.sublime-project
+src/org/ptodd/wumpus/wumpus.sublime-workspace
