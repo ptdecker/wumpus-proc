@@ -21,16 +21,13 @@ No build system (make, ant, maven, gradle, etc.) has been utilized yet. I am sti
 
 For now, to install and get it running you should be able to:
 
-1. Fork the respository
-1. Compile the source
-
-	$ javac -cp . -d ./classes/ ./src/org/ptodd/wumpus/*.java
-
- * This assumes the source file(s) are in ./src/org/ptodd/wumpus
- * No third-party jars are used at this time
-1. Execute
-
-	$ java -cp ./classes org/ptodd/wumpus/Wumpus
+    $ mkdir -p ~/code/wumpus
+    $ cd ~/code/wumpus
+    $ git init
+    $ git remote add origin https://github.com/ptdecker/wumpus-proc.git
+    $ git pull origin master
+    $ mvn package -Dmaven.compiler.target=1.7 -Dmaven.compiler.source=1.7
+    $ ./run.sh
 
 ## Support
 
