@@ -17,9 +17,7 @@ See:
 
 ## Installing
 
-No build system (make, ant, maven, gradle, etc.) has been utilized yet. I am still working out the rust in my old skills and have not yet taken this on.
-
-For now, to install and get it running you should be able to:
+To download the source, build, and get it running you should be able to:
 
     $ mkdir -p ~/code/wumpus
     $ cd ~/code/wumpus
