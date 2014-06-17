@@ -1,0 +1,14 @@
+{
+	"folders":
+	[
+		{
+			"path": "/home/ptdecker/code/wumpus"
+		},
+		{
+			"path": "src/main/java/org/ptodd/wumpus"
+		},
+		{
+			"path": "src/test/java/org/ptodd/wumpus"
+		}
+	]
+}
