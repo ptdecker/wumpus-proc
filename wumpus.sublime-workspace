@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"pres",
+				"pressEnterPrompt"
+			],
+			[
+				"next",
+				"nextLine"
+			],
+			[
 				"users",
 				"Users"
 			],
@@ -144,10 +152,6 @@
 				"setUserFK"
 			],
 			[
-				"next",
-				"nextString"
-			],
-			[
 				"getF",
 				"getFileFromJSON"
 			],
@@ -259,6 +263,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "src/main/java/org/ptodd/wumpus/Wumpus.java",
+			"settings":
+			{
+				"buffer_size": 28475,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -487,8 +499,36 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src/main/java/org/ptodd/wumpus/Wumpus.java",
+					"settings":
+					{
+						"buffer_size": 28475,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								26902,
+								26902
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 10181.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],

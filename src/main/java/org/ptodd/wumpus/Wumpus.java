@@ -26,8 +26,9 @@
 /**
  * To complie:
  *    - from ./
- *    - "javac -cp . -d ./classes/ ./src/org/ptodd/wumpus/*.java"
- *    - assuming source files in ./src/org/ptodd/wumpus
+ *    - "mkdir ./classes" (if it doesn't already exist)
+ *    - "javac -cp . -d ./classes/ ./src/main/java/org/ptodd/wumpus/*.java"
+ *    - assuming source files in ./src/main/java/ptodd/wumpus
  *    - no third-party jars
  * To execute:
  *	  - from ./
@@ -135,6 +136,7 @@ public class Wumpus {
 		
 	private Wumpus() {
 		
+		clearConsole();
 		out.println("Java Wumpus\n");
 		
 		if (singleUpperCaseCharPrompt("Instructions (Y-N)?") == 'Y') {			
@@ -144,12 +146,13 @@ public class Wumpus {
 		setup();
 		
 		do {			
-			out.println("\nHunt the Wumpus");
+			clearConsole();
+			out.println("Hunt the Wumpus");
 			playGame();
 			finalStatus();
 		} while (playAgain());
 		
-		out.println("\nThank you for playing 'Hunt the Wumpus'!");
+		out.println("\nThank you for playing 'Hunt the Wumpus'!\n");
 
 	} // constructor Wumpus
 
@@ -279,6 +282,15 @@ public class Wumpus {
 		return response.charAt(0);
 
 	} // method singleUpperCaseCharPrompt
+
+	/**
+	 * Prompt user to 'press any key to continue'
+	 */
+
+	private void pressEnterPrompt() {
+		out.printf("Please press the 'Enter' key to continue...");
+		in.nextLine();
+	}
 	
 	/**
 	 * Set up the game
@@ -286,7 +298,7 @@ public class Wumpus {
 	 * Set up the game by placing the game objects into the cave system
 	 * assuring that each cave room contains, at most, one object. 
 	 * 
-	 * This naive algorithm used to assure no two objects are placed into the
+	 * The naive algorithm used to assure no two objects are placed into the
 	 * same room is to loop through each of the game objects and, for 
 	 * each one, pick a random room in which to place the object.  Before
 	 * the objects location is recorded, we loop back down through all the
@@ -800,6 +812,7 @@ public class Wumpus {
 	 */
 	
 	private void instructions() {
+		clearConsole();
 		out.printf("Welcome to 'Hunt the Wumpus'\n\n");
 		out.printf("The Wumpus lives in a cave of %d rooms.  Each room\n", MAX_ROOMS);
 		out.printf("has %d tunnels leading to other rooms.  (Look at a\n", MAX_PATHS);
@@ -814,7 +827,9 @@ public class Wumpus {
 		out.printf("Wumpus - The wumpus is not bothered by the hazards (he\n");
 		out.printf("has sucker feet and is too big for a bat to lift).\n");
 		out.printf("Usually he is asleep.  Two things that wake him up:\n");
-		out.printf("entering his room, or shooting an arrow.\n");
+		out.printf("entering his room, or shooting an arrow.\n\n");
+		pressEnterPrompt();
+		clearConsole();
 		out.printf("If the wumpus wakes, he moves (P=.75) one room or\n");
 		out.printf("stays still (P=.25). After that, if he is where you are\n");
 		out.printf("he eats you up (and you lose!)\n\n");
@@ -832,7 +847,18 @@ public class Wumpus {
 		out.printf("\tWumpus - 'I smell a wumpus!'\n");
 		out.printf("\tBat - 'Bats nearby.'\n");
 		out.printf("\tPit - 'I feel a draft'\n\n");
+		pressEnterPrompt();
 	} // method instructions
+
+	/**
+	 * Clear console
+	 *
+	 * Clears the console using ANSI escape codes and positions cursor at coordinates 1,1
+	 */
+
+	private void clearConsole() {
+		out.printf("\u001B[2J\u001B[f");
+	}
 	
 	/**
 	 * Static main method.  Program entry point 
