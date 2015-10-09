@@ -13,7 +13,5 @@ classes/**
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-ligo.sublime-project
-ligo.sublime-workspace
-src/org/ptodd/wumpus/wumpus.sublime-project
-src/org/ptodd/wumpus/wumpus.sublime-workspace
+*.sublime-project
+*.sublime-workspace
